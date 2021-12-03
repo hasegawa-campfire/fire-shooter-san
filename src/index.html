@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title>FIRE SHOOTER SAN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta
+  name="description"
+  content="ハートを射止めて￥1,000,000を目指そう！シンプルなシューティングゲームです！"
+/>
+<meta
+  name="keywords"
+  content="FIRE SHOOTER SAN, シューティングゲーム, STG, shmup"
+/>
+<link
+  rel="canonical"
+  href="https://hasegawa-campfire.github.io/fire-shooter-san/"
+/>
+<meta property="og:type" content="website" />
+<meta
+  property="og:url"
+  content="https://hasegawa-campfire.github.io/fire-shooter-san/"
+/>
+<meta property="og:title" content="FIRE SHOOTER SAN" />
+<meta property="og:site_name" content="FIRE SHOOTER SAN" />
+<meta
+  property="og:description"
+  content="ハートを射止めて￥1,000,000を目指そう！シンプルなシューティングゲームです！"
+/>
+<meta
+  property="og:image"
+  content="https://hasegawa-campfire.github.io/fire-shooter-san/ogp.png"
+/>
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@hsgwkt" />
+
+<link rel="icon" href="./assets/favicon.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="leaderboard/style.css" />
+
+<script type="importmap">
+  {
+    "imports": {
+      "@/": "./",
+      "game": "./lib/game/index.js",
+      "firebase/app": "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js",
+      "firebase/analytics": "https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js",
+      "firebase/auth": "https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js",
+      "firebase/firestore/lite": "https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-lite.js",
+      "env": "./env.dev.js"
+    }
+  }
+</script>
+<style>
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    font-family: 'DotGothic16', sans-serif;
+    color: #f64744;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    overscroll-behavior-y: none;
+    user-select: none;
+  }
+  body:not(.loaded) {
+    display: none;
+  }
+  canvas {
+    margin: 0 auto;
+    display: block;
+    cursor: inherit;
+  }
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+  main {
+    height: 100%;
+    overflow: auto;
+  }
+</style>
+
+<main>
+  <canvas id="app"></canvas>
+
+  <div class="leaderboard">
+    <div class="about-button clickable">
+      <svg class="about-icon" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+        />
+        <path
+          d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"
+        />
+      </svg>
+    </div>
+    <div class="user-button clickable">
+      <svg class="user-icon" viewBox="0 0 16 16" fill="currentColor">
+        <path
+          d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z"
+          fill-rule="evenodd"
+        />
+      </svg>
+    </div>
+    <div class="entry-list"></div>
+  </div>
+</main>
+
+<div class="about modal-container">
+  <div class="modal">
+    <div class="modal-content">
+      <div class="modal-head">FIRE SHOOTER SAN について</div>
+      <a href="https://camp-fire.jp" target="_blank">CAMPFIRE</a>
+      の
+      <a href="https://qiita.com/advent-calendar/2021/campfire" target="_blank"
+        >アドベントカレンダー</a
+      >
+      で制作された、非公式のシューティングゲームです<br />
+      <br />
+      <a class="qiita" href="https://qiita.com" target="_blank">ほげほげ</a
+      ><br />
+      <a class="note" href="https://note.com" target="_blank">ほげほげ</a>
+
+      <div class="modal-head">操作方法</div>
+      動く: 矢印キー
+      <small>/</small>
+      WASD<br />
+      撃つ: Z
+      <small>/</small>
+      SPACE
+      <small>/</small>
+      CTRL
+      <small>/</small>
+      .<br />
+      リセット: ESC
+      <small>/</small>
+      ENTER<br />
+      <small>※タッチ操作でも遊べます</small>
+
+      <!--
+      <div class="modal-head">素材提供</div>
+      日本語フォント:
+      <a
+        href="http://itouhiro.hatenablog.com/entry/20130602/font"
+        target="_blank"
+        >PixelMplus</a
+      ><br />
+      日本語フォント:
+      <a href="https://fonts.google.com/specimen/DotGothic16" target="_blank"
+        >DotGothic16</a
+      ><br />
+      アイコン:
+      <a href="https://icons.getbootstrap.com" target="_blank"
+        >Bootstrap Icons</a
+      ><br />
+      効果音:
+      <a href="http://pansound.com/panicpumpkin" target="_blank">PANICPUMPKIN</a
+      ><br />
+      効果音:
+      <a href="https://fc.sitefactory.info" target="_blank">FC音工房</a><br />
+      効果音:
+      <a href="http://seadenden-8bit.com" target="_blank"
+        >seadenden 8bit freeBGM</a
+      ><br />
+      音楽:
+      <a href="https://audiostock.jp" target="_blank">Audiostock</a>
+      -->
+
+      <div class="modal-head">リンク</div>
+      <a
+        class="github"
+        href="https://github.com/hasegawa-campfire/fire-runner-san"
+        target="_blank"
+        >GitHub</a
+      ><br />
+      <a class="twitter" href="https://twitter.com/hsgwkt" target="_blank"
+        >8kg</a
+      >
+    </div>
+    <div class="modal-close clickable">閉じる</div>
+  </div>
+</div>
+
+<div class="user modal-container">
+  <div class="modal">
+    <div class="modal-head">ユーザー設定</div>
+    <form class="form">
+      <div class="form-label">名前</div>
+      <input
+        class="form-textfield"
+        placeholder="no name"
+        maxlength="100"
+        spellcheck="false"
+      />
+      <button type="submit" class="form-save clickable" disabled>保存</button>
+    </form>
+    <div class="modal-head">自己ベスト</div>
+    <div class="record-list">
+      <div>なし</div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="modal-close clickable">閉じる</div>
+  </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+<script>
+  document.body.classList.add('loaded')
+</script>

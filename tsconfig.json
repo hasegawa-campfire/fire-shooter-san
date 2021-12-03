@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "game": ["./src/lib/game/index.js"],
+      "env": ["./src/env.dev.js"]
+    },
+    "outDir": "./dist"
+  }
+}

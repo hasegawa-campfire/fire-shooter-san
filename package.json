@@ -1,0 +1,27 @@
+{
+  "name": "fire-shooter-san",
+  "version": "0.1.0",
+  "source": "src/index.html",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "parcel build --no-source-maps",
+    "postbuild": "cp -r src/public/* dist/",
+    "packing": "node packing.mjs",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "firebase": "9.6.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "parcel": "^2.0.1",
+    "sharp": "^0.29.3"
+  },
+  "browserslist": "> 0.25%, not dead",
+  "alias": {
+    "@/*": "./src/$1",
+    "game": "./src/lib/game/index.js",
+    "env": "./src/env.prod.js"
+  }
+}

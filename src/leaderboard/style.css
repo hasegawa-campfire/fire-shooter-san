@@ -1,0 +1,384 @@
+.clickable {
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+@media screen and (min-width: 480px) {
+  .clickable {
+    cursor: pointer;
+  }
+
+  .clickable:hover {
+    opacity: 0.6;
+  }
+}
+
+.clickable:active {
+  opacity: 0.2;
+  transition: none;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 360px);
+  align-items: center;
+  justify-content: center;
+  background-color: #fffe;
+  opacity: 1;
+  transition: opacity 0.3s;
+  overflow: auto;
+  z-index: 1;
+}
+
+.modal-container:not(.opened) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal {
+  position: relative;
+  top: 0;
+  padding: 20px 20px 10px;
+  border: currentColor 4px solid;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: top 0.3s;
+}
+
+.modal-container:not(.opened) .modal {
+  top: 16px;
+  transition-duration: 0s;
+  transition-delay: 0.3s;
+}
+
+.modal-head {
+  margin: 32px 0 12px;
+  border-bottom: currentColor 1px dotted;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.modal-head:first-child {
+  margin-top: 0;
+}
+
+.modal-close {
+  margin-top: 32px;
+  font-size: 12px;
+  text-align: center;
+  line-height: 36px;
+}
+
+.leaderboard {
+  margin: 20px auto;
+  min-height: 104px;
+  position: relative;
+  padding: 30px;
+  width: 480px;
+  max-width: calc(100% - 20px);
+  border: currentColor 4px solid;
+  border-radius: 6px;
+}
+
+#app:not([style]) ~ .leaderboard {
+  display: none;
+}
+
+@media screen and (max-width: 480px) {
+  .leaderboard {
+    padding: 30px 16px;
+  }
+}
+
+.leaderboard .about-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+@media screen and (max-width: 480px) {
+  .leaderboard .about-button {
+    top: 4px;
+    left: 4px;
+  }
+}
+
+.leaderboard .about-icon {
+  width: 24px;
+}
+
+.leaderboard .user-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+}
+
+@media screen and (max-width: 480px) {
+  .leaderboard .user-button {
+    top: 4px;
+    right: 4px;
+  }
+}
+
+.leaderboard .user-icon {
+  height: 24px;
+}
+
+.leaderboard .entry-list {
+  margin: 0 auto;
+  width: 360px;
+  max-width: 100%;
+}
+
+.leaderboard .entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .leaderboard .entry {
+    font-size: 13px;
+  }
+}
+
+.leaderboard .entry.me {
+  color: #f69c44;
+}
+
+.leaderboard .entry::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-bottom: currentColor 2px dotted;
+  opacity: 0.3;
+}
+
+.leaderboard .entry-order {
+  flex: none;
+  width: 36px;
+  text-align: right;
+}
+
+.leaderboard .entry-name {
+  flex: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  user-select: text;
+}
+
+.leaderboard .entry-score {
+  flex: none;
+  user-select: text;
+}
+
+.leaderboard .entry-replay {
+  flex: none;
+  position: relative;
+  width: 36px;
+  height: 36px;
+}
+
+.leaderboard .entry-replay::after {
+  content: '▶';
+  position: absolute;
+  top: calc(50% - 12px);
+  left: calc(50% - 12px);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  border: currentColor 2px solid;
+  border-radius: 3px;
+}
+
+.about .modal-content {
+  font-size: 14px;
+  user-select: text;
+}
+
+.about a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+@media screen and (min-width: 480px) {
+  .about a:hover {
+    color: #f69c44;
+  }
+}
+
+.about .qiita::before,
+.about .note::before,
+.about .twitter::before,
+.about .github::before {
+  margin-right: 0.3em;
+  content: '';
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.about .qiita::before {
+  background-image: url(../assets/qiita.png);
+}
+
+.about .note::before {
+  background-image: url(../assets/note.png);
+}
+
+.about .twitter::before {
+  background-image: url(../assets/twitter.png);
+}
+
+.about .github::before {
+  background-image: url(../assets/github.png);
+}
+
+.user .modal:not(.loading)::before {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.user .modal::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(50% - 16px);
+  left: calc(50% - 16px);
+  width: 32px;
+  height: 32px;
+  border: transparent 5px solid;
+  border-top-color: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  animation: loading 0.5s linear infinite;
+}
+
+.user .modal:not(.loading)::after {
+  opacity: 0;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.user .form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+}
+
+.user .form-label {
+  font-size: 10px;
+  width: 100%;
+}
+
+.user .form-textfield {
+  flex: auto;
+  height: 36px;
+  padding: 0 10px;
+  color: #222;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 34px;
+  letter-spacing: 1px;
+  border: #f64744 1px solid;
+  border-radius: 2px;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+}
+
+.user .form-save {
+  flex: none;
+  width: 64px;
+  height: 36px;
+  padding: 0 10px;
+  line-height: 34px;
+  color: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  border: currentColor 2px solid;
+  border-radius: 3px;
+  background-color: #fff;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+}
+
+.user .form-save[disabled] {
+  pointer-events: none;
+  color: #fff;
+  background-color: rgba(128, 0, 0, 0.1);
+  border-color: transparent;
+}
+
+.user .record-list {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  user-select: text;
+}
+
+.user .record-list :nth-child(3n + 2) {
+  justify-self: end;
+}
+
+.user .record-replay {
+  position: relative;
+  width: 36px;
+  height: 36px;
+}
+
+.user .record-replay::after {
+  content: '▶';
+  position: absolute;
+  top: calc(50% - 12px);
+  left: calc(50% - 12px);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  border: currentColor 2px solid;
+  border-radius: 3px;
+}
