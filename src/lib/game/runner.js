@@ -38,9 +38,9 @@ export class Runner {
     this.#updateTimer = window.requestAnimationFrame(this.#update)
     this.#tickCount++
 
-    // const time = Date.now()
-    // if ((time - this.#prevTime) / (1000 / this.fps) < 0.8) return
-    // this.#prevTime = time
+    const time = Date.now()
+    if (time - this.#prevTime < this.frameTime * 0.8) return
+    this.#prevTime = time
 
     this.proc?.()
   }

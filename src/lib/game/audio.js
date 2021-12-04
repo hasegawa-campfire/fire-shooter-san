@@ -6,7 +6,7 @@ import { StatefulPromise } from './stateful-promise.js'
 const AudioContext = window.webkitAudioContext || window.AudioContext
 
 const ctxPromise = StatefulPromise.from(async () => {
-  await asyncEvent(document, ['touchend', 'mouseup', 'keyup'])
+  await asyncEvent(document, ['touchstart', 'mousedown', 'keydown'])
 
   const ctx = new AudioContext()
   const applyState = () => {
@@ -41,6 +41,7 @@ export class AudioBase {
   #gainNodePromise
   /** @type {AudioBufferSourceNode|null} */
   #audioSource = null
+  #playing = true
 
   /**
    * @param {URL|string} url
@@ -69,6 +70,7 @@ export class AudioBase {
   }
 
   play() {
+    this.#playing = true
     if (
       ctxPromise.isResolved() &&
       this.#audioBufferPromise.isResolved() &&
@@ -96,12 +98,15 @@ export class AudioBase {
         this.#audioBufferPromise,
         this.#gainNodePromise,
       ]).then(() => {
-        this.play()
+        if (this.#playing) {
+          this.play()
+        }
       })
     }
   }
 
   stop() {
+    this.#playing = false
     this.#audioSource?.stop()
     this.#audioSource = null
   }
