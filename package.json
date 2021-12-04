@@ -4,10 +4,10 @@
   "source": "src/index.html",
   "license": "MIT",
   "scripts": {
+    "packing": "node packing.mjs",
     "prebuild": "rm -rf dist",
     "build": "parcel build --no-source-maps",
     "postbuild": "cp -r src/public/* dist/",
-    "packing": "node packing.mjs",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

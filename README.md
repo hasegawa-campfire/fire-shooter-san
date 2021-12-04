@@ -6,20 +6,39 @@
 
 ## 動作環境
 
-- モダンブラウザ（スマホも含む）
+- モダンブラウザ（スマホ含む）
 
 RIP Internet Explorer
 
 ## ローカル実行
 
 - 開発環境はありません
-- ローカルサーバーを用意して直接 src/index.html にアクセス
-- 要 Chrome
+- 直接 src/index.html を開きます
+- 要ローカルサーバー＆Chrome
 
 ## ビルド
 
+そのままでも src/index.html が動きますが、
+ビルドすれば dist/index.html も動きます
+
 ```
 yarn build
+```
+
+## デプロイ
+
+github pages にアップロードされます
+
+```
+yarn deploy
+```
+
+## テクスチャアトラスの更新
+
+src/image 内の画像を 1 つにまとめます
+
+```
+yarn packing
 ```
 
 ## 使用素材
