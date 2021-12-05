@@ -317,6 +317,8 @@
 
 .user .form-textfield {
   flex: auto;
+  margin: 0;
+  width: 0;
   height: 36px;
   padding: 0 10px;
   color: #222;
