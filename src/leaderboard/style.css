@@ -233,10 +233,7 @@
   }
 }
 
-.about .qiita::before,
-.about .note::before,
-.about .twitter::before,
-.about .github::before {
+.about .sns::before {
   margin-right: 0.3em;
   content: '';
   display: inline-block;
@@ -248,19 +245,19 @@
   image-rendering: -webkit-optimize-contrast;
 }
 
-.about .qiita::before {
+.about .sns.qiita::before {
   background-image: url(../assets/qiita.png);
 }
 
-.about .note::before {
+.about .sns.note::before {
   background-image: url(../assets/note.png);
 }
 
-.about .twitter::before {
+.about .sns.twitter::before {
   background-image: url(../assets/twitter.png);
 }
 
-.about .github::before {
+.about .sns.github::before {
   background-image: url(../assets/github.png);
 }
 
