@@ -202,7 +202,7 @@
 }
 
 .leaderboard .entry-replay::after {
-  content: '▶';
+  content: '';
   position: absolute;
   top: calc(50% - 12px);
   left: calc(50% - 12px);
@@ -215,6 +215,15 @@
   line-height: 1;
   border: currentColor 2px solid;
   border-radius: 3px;
+  background-image: url(../assets/replay.png);
+  background-position: center;
+  background-size: 11px auto;
+  background-repeat: no-repeat;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.leaderboard .entry.me .entry-replay::after {
+  background-image: url(../assets/replay-me.png);
 }
 
 .about .modal-content {
@@ -365,7 +374,7 @@
 }
 
 .user .record-replay::after {
-  content: '▶';
+  content: '';
   position: absolute;
   top: calc(50% - 12px);
   left: calc(50% - 12px);
@@ -378,4 +387,9 @@
   line-height: 1;
   border: currentColor 2px solid;
   border-radius: 3px;
+  background-image: url(../assets/replay.png);
+  background-position: center;
+  background-size: 11px auto;
+  background-repeat: no-repeat;
+  image-rendering: -webkit-optimize-contrast;
 }
