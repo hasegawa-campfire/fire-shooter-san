@@ -27,7 +27,8 @@ yarn build
 
 ## デプロイ
 
-github pages にアップロードされます
+dist の内容が github pages にアップロードされます
+予めビルドしておくこと
 
 ```
 yarn deploy

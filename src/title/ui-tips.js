@@ -50,7 +50,7 @@ export default () => {
         blinkFast.update()
 
         if (tipsNo === 0 && blinkFast.value) {
-          g.drawSprite(tips.million, 39, 31)
+          g.drawSprite(tips.million, 39, 32)
         }
 
         if (tipsNo === 1 && blinkFast.value) {
