@@ -157,6 +157,7 @@ export class PointerInput {
       }
     }
 
+    /** @todo ここで0にはしないでget vec()か受け取り側で0にする (リプレイでposが壊れている) */
     if (this.#down && !this.#downOld) {
       this.#dx = 0
       this.#dy = 0

@@ -35,10 +35,28 @@ import { registerReplay, setReplayId } from '@/leaderboard/index.js'
  * @param {Replay} [replay]
  */
 export default (replay) => {
+  /**@type {StatefulPromise<Result>|undefined} */
+  let resultPromise = undefined
+  let score = 0
+  let time = 60 * runner.fps
+  let randomSeed = 0
+  let timeUp = false
+  let deadCount = 0
+
   if (replay) {
     logEvent(`${replay.mode}_replay`, { replay_id: replay.id })
+    const logs = unpackNums(code2nums(replay.log))
+    random.seed = replay.seed
+    recordKeys.forEach((key, i) => {
+      key.log = logs[i] || []
+      key.playLog()
+    })
   } else {
     logEvent(`${store.mode}_play`)
+    randomSeed = random.updateSeed()
+    for (const key of recordKeys) {
+      key.recLog()
+    }
   }
 
   const on = /** @type {EventMap} */ ({})
@@ -79,16 +97,6 @@ export default (replay) => {
     .to({ x: 1, y: 1 }, 40)
     .to({ x: -1, y: -1 }, 40)
     .to({ x: 0, y: 0 })
-
-  let score = 0
-  let time = 60 * runner.fps
-
-  /**@type {StatefulPromise<Result>|undefined} */
-  let resultPromise = undefined
-
-  const randomSeed = random.updateSeed()
-  let timeUp = false
-  let deadCount = 0
 
   on.statusInitIn = () => {
     procs.ui.add(UiStart())
@@ -150,19 +158,6 @@ export default (replay) => {
   store.heartRate = 0
   store.isSuccess = false
   store.clearing.reset()
-
-  if (replay) {
-    const logs = unpackNums(code2nums(replay.log))
-    random.seed = replay.seed
-    recordKeys.forEach((key, i) => {
-      key.log = logs[i] || []
-      key.playLog()
-    })
-  } else {
-    for (const key of recordKeys) {
-      key.recLog()
-    }
-  }
 
   return () => {
     event.subscribe(on)

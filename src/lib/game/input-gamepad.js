@@ -103,11 +103,15 @@ export class GamepadButtonInput {
   }
 
   playLog() {
-    this.#count = this.#log[0]
+    this.#count = this.#log[0] || 0
     this.#downOld = Boolean(this.#log[1])
     this.#down = Boolean(this.#log[2])
     this.#logIndex = 3
     this.#logMode = 'play'
+
+    if (this.#count === 0 && this.#downOld === this.#down) {
+      this.#logIndex = Number.MAX_SAFE_INTEGER
+    }
   }
 
   endLog() {
@@ -247,6 +251,8 @@ export class GamepadAxesInput {
       this.#down ? 1 : 0,
       this.#count,
     ]
+
+    /** @todo #valueと#valueOldの順は出来れば逆にしたい */
     this.#logValue = [
       this.#valueCount,
       this.#value,
@@ -266,6 +272,14 @@ export class GamepadAxesInput {
     this.#valueOld = this.#logValue[2] || 0
     this.#logValueIndex = 3
     this.#logMode = 'play'
+
+    if (this.#count === 0 && this.#downOld === this.#down) {
+      this.#logIndex = Number.MAX_SAFE_INTEGER
+    }
+
+    if (this.#valueCount === 0 && this.#value === this.#valueOld) {
+      this.#logValueIndex = Number.MAX_SAFE_INTEGER
+    }
   }
 
   endLog() {
