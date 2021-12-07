@@ -6,6 +6,10 @@ import {
   hit,
   key,
   pointer,
+  pad,
+  axes,
+  resetKeys,
+  recordKeys,
   procs,
   se,
   bgm,
@@ -17,8 +21,7 @@ import { setReplayId, onReplay, getMode } from '@/leaderboard/index.js'
 
 function reset() {
   tween.clear()
-  Object.values(key).forEach((k) => k.endLog())
-  pointer.endLog()
+  recordKeys.forEach((k) => k.endLog())
   Object.values(procs).forEach((p) => p.clear())
 }
 
@@ -28,6 +31,8 @@ function update() {
   hit.clear()
   Object.values(key).forEach((k) => k.update())
   pointer.update()
+  Object.values(pad).forEach((k) => k.update())
+  Object.values(axes).forEach((k) => k.update())
   tween.update()
 }
 
@@ -70,7 +75,7 @@ runner.proc = () => {
   update()
   event.subscribe(on)
 
-  if (key.reset.isDownChange && !overlayOut.running) {
+  if (resetKeys.some((k) => k.isDownChange) && !overlayOut.running) {
     event.emit('sceneChange', () => {
       setReplayId('')
       return Title()

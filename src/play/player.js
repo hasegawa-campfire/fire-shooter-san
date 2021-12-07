@@ -1,17 +1,17 @@
-import { Tween, getArrowKeysVec, Procs } from 'game'
+import { Tween, getArrowVec, Procs } from 'game'
 import {
   store,
   g,
-  key,
   pointer,
   fireKeys,
   arrowKeys,
+  arrowButtons,
+  arrowAxes,
   sprite,
   procs,
   event,
   hit,
   tween,
-  logEvent,
 } from '@/r.js'
 import PlayerBullet from './player-bullet.js'
 import PlayerDestroy from './player-destroy.js'
@@ -82,8 +82,8 @@ const Player = (replay) => {
       y += v.y * 1.4
       variant = pointer.downCount > 7
     } else {
-      variant = key.fire.downCount > 7
-      const v = getArrowKeysVec(arrowKeys)
+      variant = fireKeys.reduce((n, k) => Math.max(n, k.downCount || 0), 0) > 7
+      const v = getArrowVec(arrowKeys, arrowButtons, arrowAxes)
       x += v.x * (variant ? 1.5 : 4.5)
       y += v.y * (variant ? 1.5 : 4.5)
     }

@@ -130,7 +130,7 @@ export class KeyInput {
   }
 
   playLog() {
-    this.#count = this.#log[0]
+    this.#count = this.#log[0] || 0
     this.#downOld = Boolean(this.#log[1])
     this.#down = Boolean(this.#log[2])
     this.#logIndex = 3
@@ -140,14 +140,4 @@ export class KeyInput {
   endLog() {
     this.#logMode = 'pause'
   }
-}
-
-/**
- * @param {KeyInput[]} param
- */
-export function getArrowKeysVec([up, right, down, left]) {
-  const vx = (right.isDown ? 1 : 0) + (left.isDown ? -1 : 0)
-  const vy = (down.isDown ? 1 : 0) + (up.isDown ? -1 : 0)
-  const d = Math.sqrt(vx * vx + vy * vy) || 1
-  return { x: vx / d, y: vy / d }
 }

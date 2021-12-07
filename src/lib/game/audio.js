@@ -1,12 +1,51 @@
 import { asyncEvent } from './util.js'
 import { StatefulPromise } from './stateful-promise.js'
 
+let pollTimerId = 0
+
+const gamepadPromise = asyncEvent(window, 'gamepadconnected').then(() => {
+  const oldButtons = /** @type {boolean[][]} */ ([])
+  const check = () => {
+    const gamepads = navigator.getGamepads?.() || []
+    for (let i = 0; i < gamepads.length; i++) {
+      const gamepad = gamepads[i]
+      if (gamepad) {
+        let oldButton = oldButtons[i]
+        if (!oldButton) {
+          oldButton = oldButtons[i] = gamepad.buttons.map((b) => b.pressed)
+        }
+        if (gamepad.buttons.some((b, j) => b.pressed !== oldButton[j])) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+
+  return new Promise((resolve) => {
+    const poll = () => {
+      if (check() || pollTimerId < 0) {
+        resolve(true)
+      } else {
+        pollTimerId = requestAnimationFrame(poll)
+      }
+    }
+    poll()
+  })
+})
+
 /** @type {typeof window.AudioContext} */
 // @ts-ignore
 const AudioContext = window.webkitAudioContext || window.AudioContext
 
 const ctxPromise = StatefulPromise.from(async () => {
-  await asyncEvent(document, ['touchstart', 'mousedown', 'keydown'])
+  await Promise.race([
+    asyncEvent(document, ['touchstart', 'mousedown', 'keydown']),
+    gamepadPromise,
+  ])
+
+  cancelAnimationFrame(pollTimerId)
+  pollTimerId = -1
 
   const ctx = new AudioContext()
   const applyState = () => {

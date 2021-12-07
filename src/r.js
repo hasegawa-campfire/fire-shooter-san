@@ -3,6 +3,8 @@ import {
   Graphic,
   EventManager,
   HitManager,
+  GamepadButtonInput,
+  GamepadAxesInput,
   KeyInput,
   PointerInput,
   TweenManager,
@@ -40,10 +42,41 @@ export const key = {
 
 export const pointer = new PointerInput(g)
 
+export const pad = {
+  left: new GamepadButtonInput([14]),
+  right: new GamepadButtonInput([15]),
+  up: new GamepadButtonInput([12]),
+  down: new GamepadButtonInput([13]),
+  fire: new GamepadButtonInput([0, 1, 2, 3, 4, 5]),
+  reset: new GamepadButtonInput([6, 7, 8, 9, 10, 11]),
+}
+
+export const axes = {
+  left: new GamepadAxesInput([
+    [0, false],
+    [2, false],
+  ]),
+  right: new GamepadAxesInput([
+    [0, true],
+    [2, true],
+  ]),
+  up: new GamepadAxesInput([
+    [1, false],
+    [3, false],
+  ]),
+  down: new GamepadAxesInput([
+    [1, true],
+    [3, true],
+  ]),
+}
+
 export const arrowKeys = [key.up, key.right, key.down, key.left]
-export const fireKeys = [key.fire, pointer]
-export const anyKeys = [...arrowKeys, ...fireKeys]
-export const recordKeys = [...arrowKeys, ...fireKeys]
+export const arrowButtons = [pad.up, pad.right, pad.down, pad.left]
+export const arrowAxes = [axes.up, axes.right, axes.down, axes.left]
+export const fireKeys = [key.fire, pointer, pad.fire]
+export const resetKeys = [key.reset, pad.reset]
+export const anyKeys = [...arrowKeys, ...fireKeys, ...arrowButtons]
+export const recordKeys = [...anyKeys, ...arrowAxes]
 
 export const tween = new TweenManager(runner)
 

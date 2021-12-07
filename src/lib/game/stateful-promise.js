@@ -6,7 +6,7 @@ export class StatefulPromise {
   #promise
   #resolved = false
   /** @type {T|undefined} */
-  #value = undefined
+  #resolvedValue = undefined
 
   /**
    * @param {PromiseLike<T>} promise
@@ -15,7 +15,7 @@ export class StatefulPromise {
     this.#promise = promise
     promise.then((value) => {
       this.#resolved = true
-      this.#value = value
+      this.#resolvedValue = value
     })
   }
 
@@ -37,7 +37,7 @@ export class StatefulPromise {
   }
 
   get value() {
-    return this.#value
+    return this.#resolvedValue
   }
 
   /**

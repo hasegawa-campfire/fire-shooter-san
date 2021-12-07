@@ -130,79 +130,6 @@ export function rightX(base, rect) {
   return base.width - rect.width
 }
 
-const base64chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
-
-/**
- * @param {number[]} numbers
- */
-export function nums2code(numbers) {
-  let code = ''
-  for (let num of numbers) {
-    num = Math.floor(num)
-    let digits = (0 <= num ? num : -num - 1).toString(2).length + 1
-    let head = 0
-    let tmp = ''
-    while (digits > 0) {
-      tmp = base64chars[(num & 0b011111) | head] + tmp
-      digits -= 5
-      num = num >> 5
-      head = 0b100000
-    }
-    code += tmp
-  }
-  return code
-}
-
-/**
- * @param {string} code
- */
-export function code2nums(code) {
-  const numbers = /** @type {number[]} */ ([])
-  let num = 0
-  let first = true
-  for (const c of code) {
-    let i = base64chars.indexOf(c)
-    if (i < 0) throw Error('invalid string')
-    if (first && i & 0b010000) num = -1
-    first = false
-    num = (num << 5) | (i & 0b011111)
-    if ((i & 0b100000) === 0) {
-      numbers.push(num)
-      num = 0
-      first = true
-    }
-  }
-  return numbers
-}
-
-/**
- * @param  {number[][]} values
- */
-export function packNums(...values) {
-  let packValue = /** @type {number[]} */ ([])
-  for (const nums of values) {
-    packValue = packValue.concat(nums.length, nums)
-  }
-  return packValue
-}
-
-/**
- * @param  {number[]} packValue
- * @param  {number} size
- */
-export function unpackNums(packValue, size) {
-  const values = /** @type {number[][]} */ ([])
-  let index = 0
-  for (let i = 0; i < size; i++) {
-    const end = index + 1 + packValue[index]
-    if (packValue.length < end) throw Error('invalid pack size')
-    values.push(packValue.slice(index + 1, end))
-    index = end
-  }
-  return values
-}
-
 /**
  * @param {string} value
  */
@@ -235,4 +162,45 @@ export function asyncEvent(target, type) {
  */
 export function map(a, b, rate) {
   return (b - a) * rate + a
+}
+
+/**
+ * @param {({isDown:boolean}[]|{value:number}[])[]} keys
+ */
+export function getArrowVec(...keys) {
+  let dist = 0
+  let x = 0
+  let y = 0
+  for (const [up, right, down, left] of keys) {
+    if (
+      'value' in up &&
+      'value' in right &&
+      'value' in down &&
+      'value' in left
+    ) {
+      const vx = Math.min(Math.max(right.value - left.value, -1), 1)
+      const vy = Math.min(Math.max(down.value - up.value, -1), 1)
+      const d = Math.sqrt(vx * vx + vy * vy)
+      if (dist < d) {
+        dist = d
+        x = vx
+        y = vy
+      }
+    } else if (
+      'isDown' in up &&
+      'isDown' in right &&
+      'isDown' in down &&
+      'isDown' in left
+    ) {
+      const vx = (right.isDown ? 1 : 0) + (left.isDown ? -1 : 0)
+      const vy = (down.isDown ? 1 : 0) + (up.isDown ? -1 : 0)
+      const d = Math.sqrt(vx * vx + vy * vy)
+      if (dist < (d === 0 ? 0 : 1)) {
+        dist = 1
+        x = vx / d
+        y = vy / d
+      }
+    }
+  }
+  return { x, y }
 }

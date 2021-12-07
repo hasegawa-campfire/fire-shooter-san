@@ -152,10 +152,10 @@ export default (replay) => {
   store.clearing.reset()
 
   if (replay) {
-    const logs = unpackNums(code2nums(replay.log), recordKeys.length)
+    const logs = unpackNums(code2nums(replay.log))
     random.seed = replay.seed
     recordKeys.forEach((key, i) => {
-      key.log = logs[i]
+      key.log = logs[i] || []
       key.playLog()
     })
   } else {

@@ -1,5 +1,5 @@
 import { Graphic } from './graphic.js'
-import { packNums, unpackNums } from './util.js'
+import { packNums, unpackNums } from './pack.js'
 
 window.addEventListener('contextmenu', (e) => e.preventDefault())
 
@@ -209,10 +209,10 @@ export class PointerInput {
   }
 
   set log(log) {
-    const logs = unpackNums(log, 3)
-    this.#log = logs[0]
-    this.#logX = logs[1]
-    this.#logY = logs[2]
+    const logs = unpackNums(log)
+    this.#log = logs[0] || []
+    this.#logX = logs[1] || []
+    this.#logY = logs[2] || []
     this.#logMode = 'pause'
   }
 
@@ -229,17 +229,17 @@ export class PointerInput {
   }
 
   playLog() {
-    this.#count = this.#log[0]
+    this.#count = this.#log[0] || 0
     this.#downOld = Boolean(this.#log[1])
     this.#down = Boolean(this.#log[2])
     this.#logIndex = 3
-    this.#xCount = this.#logX[0]
-    this.#x = this.#logX[1]
-    this.#dx = this.#logX[2]
+    this.#xCount = this.#logX[0] || 0
+    this.#x = this.#logX[1] || 0
+    this.#dx = this.#logX[2] || 0
     this.#logXIndex = 3
-    this.#yCount = this.#logY[0]
-    this.#y = this.#logY[1]
-    this.#dy = this.#logY[2]
+    this.#yCount = this.#logY[0] || 0
+    this.#y = this.#logY[1] || 0
+    this.#dy = this.#logY[2] || 0
     this.#logYIndex = 3
     this.#logMode = 'play'
   }
