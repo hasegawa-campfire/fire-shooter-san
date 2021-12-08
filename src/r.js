@@ -47,8 +47,8 @@ export const pad = {
   right: new GamepadButtonInput([15]),
   up: new GamepadButtonInput([12]),
   down: new GamepadButtonInput([13]),
-  fire: new GamepadButtonInput([0, 1, 2, 3, 4, 5]),
-  reset: new GamepadButtonInput([6, 7, 8, 9, 10, 11]),
+  fire: new GamepadButtonInput([0, 1, 2, 3, 4, 5, 6, 7]),
+  reset: new GamepadButtonInput([8, 9, 10, 11, 16, 17]),
 }
 
 export const axes = {
