@@ -4,22 +4,12 @@ import { StatefulPromise } from './stateful-promise.js'
 let pollTimerId = 0
 
 const gamepadPromise = asyncEvent(window, 'gamepadconnected').then(() => {
-  const oldButtons = /** @type {boolean[][]} */ ([])
   const check = () => {
-    const gamepads = navigator.getGamepads?.() || []
-    for (let i = 0; i < gamepads.length; i++) {
-      const gamepad = gamepads[i]
-      if (gamepad) {
-        let oldButton = oldButtons[i]
-        if (!oldButton) {
-          oldButton = oldButtons[i] = gamepad.buttons.map((b) => b.pressed)
-        }
-        if (gamepad.buttons.some((b, j) => b.pressed !== oldButton[j])) {
-          return true
-        }
+    for (const gamepad of navigator.getGamepads()) {
+      if (gamepad && gamepad.buttons.some((b) => b.pressed)) {
+        return true
       }
     }
-    return false
   }
 
   return new Promise((resolve) => {
